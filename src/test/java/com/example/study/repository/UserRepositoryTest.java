@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -40,8 +41,27 @@ public class UserRepositoryTest extends StudyApplicationTests {
     }
 
     @Test
+    @Transactional
     public void read() {
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
+
+        user.getOrderGroupList().stream().forEach(orderGroup -> {
+            System.out.println("---------주문 묶음--------");
+            System.out.println(orderGroup.getRevName());
+            System.out.println(orderGroup.getRevAddress());
+            System.out.println(orderGroup.getTotalPrice());
+
+            System.out.println("---------주문 묶음--------");
+            orderGroup.getOrderDetailList().forEach(orderDetail -> {
+                System.out.println(orderDetail.getItem().getPartner().getName());
+                System.out.println(orderDetail.getItem().getPartner().getCategory().getTitle());
+                System.out.println(orderDetail.getStatus());
+                System.out.println(orderDetail.getArrivalDate());
+                System.out.println(orderDetail.getItem().getName());
+                System.out.println(orderDetail.getItem().getPartner().getCallCenter());
+            });
+        });
+
         Assertions.assertNotNull(user);
     }
 
