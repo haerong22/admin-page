@@ -1,10 +1,12 @@
 package com.example.study.model.network.request;
 
+import com.example.study.model.enumclass.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,7 +21,7 @@ public class UserApiRequest {
 
     private String password;
 
-    private String status;
+    private UserStatus status;
 
     private String email;
 
