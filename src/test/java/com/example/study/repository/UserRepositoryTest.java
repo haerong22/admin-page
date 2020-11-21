@@ -2,6 +2,7 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.User;
+import com.example.study.model.enumclass.UserStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
     public void create() {
         String account = "Test03";
         String password = "Test03";
-        String status = "REGISTERED";
+        UserStatus status = UserStatus.REGISTERED;
         String email ="Test03@gmail.com";
         String phoneNumber = "010-1111-3333";
         LocalDateTime registeredAt = LocalDateTime.now();
@@ -38,7 +39,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
     public void read() {
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
 
-        user.getOrderGroupList().stream().forEach(orderGroup -> {
+        user.getOrderGroupList().forEach(orderGroup -> {
             System.out.println("---------주문 묶음--------");
             System.out.println(orderGroup.getRevName());
             System.out.println(orderGroup.getRevAddress());
@@ -76,9 +77,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
 
         Assertions.assertTrue(user.isPresent());
 
-        user.ifPresent(selectUser -> {
-            userRepository.delete(selectUser);
-        });
+        user.ifPresent(selectUser -> userRepository.delete(selectUser));
 
         Optional<User> deleteUser = userRepository.findById(1L);
 
